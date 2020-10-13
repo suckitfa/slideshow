@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        轮播图
+    </title>
+    <style>
+        img {
+            width: 300px;
+            height: 280px;
+        }
+        
+        .images {
+            border: 1px solid #000;
+            display: flex;
+            align-items: flex-start;
+            transition: 0.5s;
+        }
+        
+        .window {
+            width: 300px;
+            border: 1px solid green;
+            overflow: hidden;
+        }
+        
+        .item1 {
+            background-color: red;
+        }
+        
+        .item2 {
+            background-color: blue;
+        }
+        
+        .item3 {
+            background-color: yellow;
+        }
+        
+        .red {
+            color: red;
+        }
+    </style>
+    <script src="jquery.js"></script>
+</head>
+
+
+<body>
+    <div class="containner">
+        <div class="window">
+            <div class="images">
+                <img src="#" alt="" class="item1">
+                <img src="#" alt="" class="item2">
+                <img src="#" alt="" class="item3">
+            </div>
+        </div>
+    </div>
+    <span>
+    <span class="red btn" id="btn1">第1张图片</span>
+    <span class="btn" id="btn2">第2张图片</span>
+    <span class="btn" id="btn3">第3张图片</span>
+    </span>
+    <script>
+        var allButtons = $('.btn');
+        var size = allButtons.length;
+
+        function ativeButton($button) {
+            $button.addClass('red')
+                .siblings('.red').removeClass('red');
+        }
+        for (let i = 0; i < size; i++) {
+            $(allButtons[i]).on('click', (event) => {
+                var index = $(event.currentTarget).index();
+                var n = index * -300;
+                $('.images').css({
+                    'transform': 'translateX(' + n + "px)"
+                });
+                n = index;
+                ativeButton(allButtons.eq(n % size));
+            });
+        }
+
+        function slideTo(index) {
+            //取出的还是juqery对象
+            allButtons.eq(index).trigger('click');
+        }
+
+
+        var n = 0;
+        ativeButton(allButtons.eq(n % size));
+        var timeId = setInterval(() => {
+            slideTo(n % size);
+            n++;
+        }, 1000);
+
+        // autoSlide();
+        $('.window').on('mouseenter', () => {
+            window.clearInterval(timeId);
+        })
+
+        $('.window').on('mouseleave', () => {
+            timeId = setInterval(() => {
+                slideTo(n % size);
+                n++;
+            }, 1000);
+        });
+        // $('#btn1').on('click', (evt) => {
+        //     $('.images').css({
+        //         transform: "translateX(-0px)"
+        //     });
+        //     $('#btn1').addClass('red')
+        //         .siblings('.red').removeClass('red');
+        // })
+        // $('#btn2').on('click', (evt) => {
+        //     $('.images').css({
+        //         transform: "translateX(-300px)"
+        //     });
+        //     $('#btn2').addClass('red')
+        //         .siblings('.red').removeClass('red');
+
+        // })
+        // $('#btn3').on('click', (evt) => {
+        //     $('.images').css({
+        //         transform: "translateX(-600px)"
+        //     });
+        //     $('#btn3').addClass('red')
+        //         .siblings('.red').removeClass('red');
+        // })
+    </script>
+</body>
+
+</html>
